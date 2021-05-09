@@ -4,10 +4,25 @@ import {
   DarkTheme,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
+import React from 'react';
 import { ColorSchemeName } from 'react-native';
-import { RootStackParamList } from '../types';
-import BottomTabNavigator from './BottomTabNavigator';
+import AuthStack from './Auth';
+
+export type IRootStack = {
+  Auth: undefined;
+  App: undefined;
+};
+
+const Stack = createStackNavigator<IRootStack>();
+
+export const RootStack = () => (
+  <Stack.Navigator
+    screenOptions={{ headerShown: false }}
+    initialRouteName="Auth"
+  >
+    <Stack.Screen name="Auth" component={AuthStack} />
+  </Stack.Navigator>
+);
 
 export default function Navigation({
   colorScheme,
@@ -18,17 +33,7 @@ export default function Navigation({
     <NavigationContainer
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <RootStack />
     </NavigationContainer>
-  );
-}
-
-const Stack = createStackNavigator<RootStackParamList>();
-
-function RootNavigator() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-    </Stack.Navigator>
   );
 }

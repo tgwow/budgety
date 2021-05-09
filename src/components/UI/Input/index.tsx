@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, View } from '../Themed';
+import { Text, View } from '../../Themed';
 import styles from './styles';
 
 export default function StyledInput() {

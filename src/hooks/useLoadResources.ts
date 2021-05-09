@@ -9,7 +9,7 @@ export default function useLoadResources() {
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
-        SplashScreen.preventAutoHideAsync();
+        await SplashScreen.preventAutoHideAsync();
 
         await Font.loadAsync({
           ...Ionicons.font,
@@ -22,12 +22,12 @@ export default function useLoadResources() {
         console.warn(e);
       } finally {
         setLoadingComplete(true);
-        SplashScreen.hideAsync();
+        await SplashScreen.hideAsync();
       }
     }
 
     loadResourcesAndDataAsync();
   }, []);
-
+  console.log(isLoadingComplete);
   return isLoadingComplete;
 }
