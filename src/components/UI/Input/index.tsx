@@ -9,8 +9,8 @@ type ITextInput = {
 export default function StyledInput({
   onBlur,
   onChange,
-  value,
   style,
+  ...rest
 }: ITextInput) {
   const [focused, setFocused] = useState(false);
   return (
@@ -22,9 +22,9 @@ export default function StyledInput({
         }
       }}
       onFocus={() => setFocused(true)}
-      onChange={(val) => (onChange ? onChange(val) : undefined)}
-      value={value}
+      onChangeText={(val: any) => (onChange ? onChange(val) : undefined)}
       style={[style, styles(focused).input]}
+      {...rest}
     />
   );
 }

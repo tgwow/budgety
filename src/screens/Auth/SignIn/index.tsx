@@ -1,10 +1,17 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './styles';
 import Container from '../../../components/Layout/Container';
 import { View } from '../../../components/Themed';
-import { StyledText, StyledButton, StyledInput } from '../../../components';
+import {
+  StyledText,
+  StyledButton,
+  StyledInput,
+  StyledError,
+} from '../../../components';
+import schema from './validation';
 
 export type ISignInForm = {
   email: string;
@@ -16,11 +23,14 @@ export default function SignIn() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISignInForm>();
+  } = useForm<ISignInForm>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+  });
 
   const handleSignIn = ({ email, password }: ISignInForm) => {
-    console.log(errors);
-    console.log({ email, password });
+    if (email !== 'admin@admin.com' || password !== 'Admin123')
+      alert('Invalid credentials');
   };
   return (
     <Container style={styles.container}>
@@ -46,18 +56,22 @@ export default function SignIn() {
           rules={{ required: true }}
           defaultValue=""
         />
+        <StyledError>{errors.email && errors.email.message}</StyledError>
+
         <StyledText level={2} weight="700">
           Password
         </StyledText>
         <Controller
           control={control}
           render={({ field }) => (
-            <StyledInput {...field} style={styles.input} />
+            <StyledInput {...field} style={styles.input} secureTextEntry />
           )}
           name="password"
           rules={{ required: true }}
           defaultValue=""
         />
+        <StyledError>{errors.password && errors.password.message}</StyledError>
+
         <TouchableOpacity style={styles.forgotContainer}>
           <StyledText level={1} weight="200" style={styles.underline}>
             Forgot Password

@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { Text, TextProps } from '../../Themed';
-import styles, { IWeight } from './styles';
+import styles from './styles';
+import { IWeight } from '../../../types/styles';
 
 type IStyledText = {
   level?: number;
