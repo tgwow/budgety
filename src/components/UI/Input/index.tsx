@@ -1,18 +1,30 @@
-import React from 'react';
-
-import { Text, View } from '../../Themed';
+import React, { useState } from 'react';
+import { Input, TextInputProps } from '../../Themed';
 import styles from './styles';
 
-export default function StyledInput() {
+type ITextInput = {
+  test?: string;
+} & TextInputProps;
+
+export default function StyledInput({
+  onBlur,
+  onChange,
+  value,
+  style,
+}: ITextInput) {
+  const [focused, setFocused] = useState(false);
   return (
-    <View style={styles.getStartedContainer}>
-      <Text
-        style={styles.getStartedText}
-        lightColor="rgba(0,0,0,0.8)"
-        darkColor="rgba(255,255,255,0.8)"
-      >
-        Open up the code for this screen:
-      </Text>
-    </View>
+    <Input
+      onBlur={(e) => {
+        setFocused(false);
+        if (onBlur) {
+          onBlur(e);
+        }
+      }}
+      onFocus={() => setFocused(true)}
+      onChange={(val) => (onChange ? onChange(val) : undefined)}
+      value={value}
+      style={[style, styles(focused).input]}
+    />
   );
 }

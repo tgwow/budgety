@@ -3,10 +3,10 @@ import * as React from 'react';
 import { Text, TextProps } from '../../Themed';
 import styles, { IWeight } from './styles';
 
-interface IStyledText extends TextProps {
+type IStyledText = {
   level?: number;
   weight?: IWeight;
-}
+} & TextProps;
 
 export default function StyledText({
   style,

@@ -4,15 +4,22 @@ export default ScaledSheet.create({
   container: {
     justifyContent: 'space-evenly',
   },
-  title: {
-    // marginTop: '100@vs',
+  input: {
+    marginTop: '5@vs',
+    marginBottom: '20@vs',
   },
-  forgotPassword: {
-    textDecorationLine: 'underline',
+  forgotContainer: {
+    marginTop: '-18@vs',
     alignSelf: 'flex-end',
   },
-  createAccount: {
+  underline: {
     textDecorationLine: 'underline',
+  },
+  createContainer: {
+    marginTop: '15@vs',
     alignSelf: 'center',
+  },
+  button: {
+    padding: 20,
   },
 });
