@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
-import { LayoutChangeEvent, TouchableOpacity } from 'react-native';
+import { LayoutChangeEvent } from 'react-native';
 import { View, ViewProps, Button } from '../../Themed';
 import { Text } from '../..';
 import Colors from '../../../constants/Colors';

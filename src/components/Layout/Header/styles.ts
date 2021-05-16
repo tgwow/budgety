@@ -19,8 +19,7 @@ export const footerStyles = (height: number) =>
   ScaledSheet.create({
     card: {
       zIndex: 9,
-      borderBottomWidth: 1,
-      borderBottomColor: '#333',
+      elevation: 5,
       paddingVertical: '20@s',
       paddingHorizontal: '30@s',
       flexDirection: 'row',
