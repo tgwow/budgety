@@ -4,6 +4,7 @@ import {
   View as DefaultView,
   TextInput as DefaultTextInput,
   TouchableOpacity as DefaultTouchableOpacity,
+  ScrollView as DefaultScrollView,
 } from 'react-native';
 import { useThemeColor } from '../hooks/useThemeColor';
 
@@ -16,6 +17,7 @@ export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
 export type ButtonProps = ThemeProps & DefaultTouchableOpacity['props'];
+export type ScrollViewProps = ThemeProps & DefaultScrollView['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -67,6 +69,28 @@ export function Button(props: ButtonProps) {
   return (
     <DefaultTouchableOpacity
       style={[{ backgroundColor }, style]}
+      {...otherProps}
+    />
+  );
+}
+
+export function ScrollView(props: ScrollViewProps) {
+  const {
+    contentContainerStyle,
+    style,
+    lightColor,
+    darkColor,
+    ...otherProps
+  } = props;
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    'background'
+  );
+
+  return (
+    <DefaultScrollView
+      style={[{ backgroundColor }, style]}
+      contentContainerStyle={[{ backgroundColor }, contentContainerStyle]}
       {...otherProps}
     />
   );
