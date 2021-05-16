@@ -1,4 +1,4 @@
-export { default as StyledButton } from './Button';
-export { default as StyledInput } from './Input';
-export { default as StyledText } from './Text';
-export { default as StyledError } from './Error';
+export { default as Button } from './Button';
+export { default as Input } from './Input';
+export { default as Text } from './Text';
+export { default as Error } from './Error';
