@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { RecoilRoot } from 'recoil';
 import useLoadResources from './src/hooks/useLoadResources';
 import useColorScheme from './src/hooks/useColorScheme';
 
@@ -15,9 +16,11 @@ export default function App() {
   if (!isLoading) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Navigation colorScheme={colorScheme} />
-      <StatusBar translucent={false} backgroundColor={backgroundColor} />
-    </SafeAreaView>
+    <RecoilRoot>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar translucent={false} backgroundColor={backgroundColor} />
+      </SafeAreaView>
+    </RecoilRoot>
   );
 }

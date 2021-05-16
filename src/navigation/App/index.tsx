@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../../constants/Colors';
@@ -15,7 +14,7 @@ export type IBottomTabNavigator = {
 
 const BottomTab = createBottomTabNavigator<IBottomTabNavigator>();
 
-export default function BottomTabNavigator() {
+export default function AppStack() {
   const colorScheme = useColorScheme();
 
   return (

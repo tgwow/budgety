@@ -1,10 +1,10 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from './styles';
-import { View, ScrollView } from '../../../components/Themed';
+import { View } from '../../../components/Themed';
 import {
   Text,
   Button,
@@ -87,9 +87,7 @@ export default function SignUp({ navigation }: ISignUp) {
       <View>
         <Button
           title="Sign Up"
-          onPress={handleSubmit(handleSignUp, () =>
-            navigation.navigate('HeadedList')
-          )}
+          onPress={handleSubmit(handleSignUp)}
           style={styles.button}
         />
         <TouchableOpacity style={styles.createContainer}>

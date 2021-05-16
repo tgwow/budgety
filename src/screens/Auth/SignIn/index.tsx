@@ -3,6 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSetRecoilState } from 'recoil';
 import styles from './styles';
 import { Container, Text, Button, Input, Error } from '../../../components';
 
@@ -11,6 +12,7 @@ import { View } from '../../../components/Themed';
 import schema from './validation';
 import { ICredentials } from '../../../types';
 import { IAuthStack } from '../../../navigation/Auth';
+import { isLoggedInState } from '../../../atom';
 
 export type ISignInForm = ICredentials;
 
@@ -27,15 +29,16 @@ export default function SignIn({ navigation }: ISignIn) {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
   const handleSignIn = ({ email, password }: ISignInForm) => {
     if (email !== 'admin@admin.com' || password !== 'Admin123') {
       alert('Invalid credentials');
       return;
     }
-    navigation.navigate('SignUp');
+    setIsLoggedIn(true);
   };
-  console.log('oi');
+
   return (
     <Container style={styles.container}>
       <View>
