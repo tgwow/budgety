@@ -34,25 +34,28 @@ export function View(props: ViewProps) {
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
-export function Input(props: TextInputProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    'backgroundContrast'
-  );
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-  const borderColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    'border'
-  );
+export const Input = React.forwardRef<any, TextInputProps>(
+  (props: TextInputProps, ref) => {
+    const { style, lightColor, darkColor, ...otherProps } = props;
+    const backgroundColor = useThemeColor(
+      { light: lightColor, dark: darkColor },
+      'backgroundContrast'
+    );
+    const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+    const borderColor = useThemeColor(
+      { light: lightColor, dark: darkColor },
+      'border'
+    );
 
-  return (
-    <DefaultTextInput
-      style={[{ backgroundColor, color, borderColor }, style]}
-      {...otherProps}
-    />
-  );
-}
+    return (
+      <DefaultTextInput
+        ref={ref}
+        style={[{ backgroundColor, color, borderColor }, style]}
+        {...otherProps}
+      />
+    );
+  }
+);
 
 export function Button(props: ButtonProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
