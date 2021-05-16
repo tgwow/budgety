@@ -16,42 +16,50 @@ import schema from './validation';
 import { ICredentials } from '../../../types';
 import { IAuthStack } from '../../../navigation/Auth';
 
-export type ISignInForm = ICredentials;
+export type ISignUpForm = {
+  name: string;
+} & ICredentials;
 
-type ISignIn = {
-  navigation: StackNavigationProp<IAuthStack, 'SignUp'>;
+export type ISignUp = {
+  navigation: StackNavigationProp<IAuthStack, 'SignIn'>;
 };
-
-export default function SignIn({ navigation }: ISignIn) {
+export default function SignUp({ navigation }: ISignUp) {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISignInForm>({
+  } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
-
-  const handleSignIn = ({ email, password }: ISignInForm) => {
-    if (email !== 'admin@admin.com' || password !== 'Admin123') {
-      alert('Invalid credentials');
-      return;
-    }
-    navigation.navigate('SignUp');
+  const handleSignUp = ({ email, name, password }: ISignUpForm) => {
+    navigation.navigate('HeadedList');
   };
-  console.log('oi');
   return (
     <Container style={styles.container}>
       <View>
         <StyledText level={6} weight="700">
-          Sign In
+          Sign Up
         </StyledText>
         <StyledText level={2} weight="200">
-          Welcome back!
+          Facilitate your life!
         </StyledText>
       </View>
 
       <View>
+        <StyledText level={2} weight="700">
+          Name
+        </StyledText>
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <StyledInput {...field} style={styles.input} />
+          )}
+          name="name"
+          rules={{ required: true }}
+          defaultValue=""
+        />
+        <StyledError>{errors.name && errors.name.message}</StyledError>
         <StyledText level={2} weight="700">
           Email
         </StyledText>
@@ -79,29 +87,25 @@ export default function SignIn({ navigation }: ISignIn) {
           defaultValue=""
         />
         <StyledError>{errors.password && errors.password.message}</StyledError>
-
-        <TouchableOpacity style={styles.forgotContainer}>
-          <StyledText level={1} weight="200" style={styles.underline}>
-            Forgot Password
-          </StyledText>
-        </TouchableOpacity>
       </View>
       <View>
         <StyledButton
-          title="Log In"
-          onPress={handleSubmit(handleSignIn)}
+          title="Sign Up"
+          onPress={handleSubmit(handleSignUp, () =>
+            navigation.navigate('HeadedList')
+          )}
           style={styles.button}
         />
         <TouchableOpacity style={styles.createContainer}>
           <StyledText level={1} weight="200">
-            or create an account{' '}
+            back to{' '}
             <StyledText
               level={1}
               weight="200"
               style={styles.underline}
-              onPress={() => navigation.navigate('SignUp')}
+              onPress={() => navigation.navigate('SignIn')}
             >
-              here!
+              SignIn!
             </StyledText>
           </StyledText>
         </TouchableOpacity>
