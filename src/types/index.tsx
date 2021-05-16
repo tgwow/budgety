@@ -1,3 +1,3 @@
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
+export * from './styles';
+export * from './generic';
+export * from './user';
