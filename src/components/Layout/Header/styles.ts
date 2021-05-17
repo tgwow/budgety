@@ -1,4 +1,5 @@
 import { ScaledSheet } from 'react-native-size-matters';
+import Colors from '../../../constants/Colors';
 
 export const styles = ScaledSheet.create({
   budget: {
@@ -10,16 +11,15 @@ export const styles = ScaledSheet.create({
   },
   amount: {},
   add: {
-    padding: '5@s',
+    padding: '7@s',
     borderRadius: '40@s',
+    backgroundColor: Colors.dark.primary,
   },
 });
 
 export const footerStyles = (height: number) =>
   ScaledSheet.create({
     card: {
-      zIndex: 9,
-      elevation: 5,
       paddingVertical: '20@s',
       paddingHorizontal: '30@s',
       flexDirection: 'row',

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import { LayoutChangeEvent } from 'react-native';
-import { View, ViewProps, Button } from '../../Themed';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, ViewProps } from '../../Themed';
 import { Text } from '../..';
 import Colors from '../../../constants/Colors';
 
@@ -34,9 +35,17 @@ export default function Header({
         <Text level={4} weight="700" style={styles.amount}>
           {numberToCurrency(amount)}
         </Text>
-        <Button style={styles.add}>
-          <Ionicons name="add-sharp" size={40} color="white" />
-        </Button>
+        <TouchableOpacity style={styles.add}>
+          <AntDesign
+            name="plus"
+            size={30}
+            color="white"
+            style={{
+              height: 30,
+              width: 30,
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
