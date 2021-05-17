@@ -9,6 +9,7 @@ import Colors from '../../../constants/Colors';
 
 import { styles, footerStyles } from './styles';
 import { numberToCurrency } from '../../../utils';
+import Modal from '../../UI/Modal';
 
 export type IHeader = {
   title: string;
@@ -21,10 +22,15 @@ export default function Header({
   amount = 25.23,
 }: IHeader) {
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
     const { height } = nativeEvent.layout;
     setHeaderHeight(height);
+  };
+
+  const toggleModal = () => {
+    setIsVisible(!isVisible);
   };
   return (
     <View style={[style, styles.budget]} darkColor={Colors.dark.primary}>
@@ -35,7 +41,7 @@ export default function Header({
         <Text level={4} weight="700" style={styles.amount}>
           {numberToCurrency(amount)}
         </Text>
-        <TouchableOpacity style={styles.add}>
+        <TouchableOpacity style={styles.add} onPress={toggleModal}>
           <AntDesign
             name="plus"
             size={30}
@@ -47,6 +53,7 @@ export default function Header({
           />
         </TouchableOpacity>
       </View>
+      <Modal isVisible={isVisible} setIsVisible={setIsVisible} />
     </View>
   );
 }
