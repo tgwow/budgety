@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextProps, Button } from '../../../Themed';
 import Text from '../../Text';
 import styles from './styles';
@@ -16,14 +16,12 @@ export default function FilterItem({
   active,
   ...rest
 }: IFilterItem) {
+  const color = active ? Colors.dark.primary : Colors.dark.backgroundContrast;
   return (
-    <Button
-      style={styles.button}
-      darkColor={active ? Colors.dark.primary : Colors.dark.backgroundContrast}
-    >
-      <Text {...rest} style={[style, styles.label]} weight="700" level={1}>
+    <TouchableOpacity style={styles(color).button}>
+      <Text {...rest} style={[style, styles().label]} weight="700" level={1}>
         {label}
       </Text>
-    </Button>
+    </TouchableOpacity>
   );
 }

@@ -7,9 +7,16 @@ import FilterItem from './FilterItem';
 
 type IFilter = {
   filters: Array<string>;
+  setActiveFilter: any;
+  activeFilters: Array<string>;
 } & ViewProps;
 
-export default function Filter({ style, filters }: IFilter) {
+export default function Filter({
+  style,
+  filters,
+  setActiveFilter,
+  activeFilters,
+}: IFilter) {
   return (
     <FlatList
       data={filters}
@@ -17,7 +24,12 @@ export default function Filter({ style, filters }: IFilter) {
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
       renderItem={({ item, index }) => (
-        <FilterItem label={item} key={index} active={index === 0} />
+        <FilterItem
+          label={item}
+          key={index}
+          active={activeFilters.includes(item)}
+          onPress={() => setActiveFilter(item)}
+        />
       )}
       horizontal
     />

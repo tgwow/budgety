@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Header, Text } from '../../../components';
 
@@ -11,11 +11,36 @@ type IBudget = {
 };
 
 export default function Budget() {
+  const [activeFilters, setActiveFilters] = useState(['All']);
+  const filters = [
+    'All',
+    'Food',
+    'Home',
+    'Others',
+    'Study',
+    'Drugs',
+    'Leisure',
+  ];
+  const onFilterPressed = (value: string) => {
+    const index = activeFilters.indexOf(value);
+
+    let updatedActiveFilters = [...activeFilters];
+
+    if (index === -1) {
+      updatedActiveFilters = [...activeFilters, value];
+    } else {
+      updatedActiveFilters.splice(index, 1);
+    }
+
+    setActiveFilters(updatedActiveFilters);
+  };
   return (
     <Container>
       <Header title="Budgets" amount={1302.2} />
       <Filter
-        filters={['All', 'Food', 'Home', 'Others', 'Study', 'Drugs', 'Leisure']}
+        filters={filters}
+        setActiveFilter={onFilterPressed}
+        activeFilters={activeFilters}
       />
       <Card type="incoming" title="Salary" amount={35} date={new Date()} />
       <Card
