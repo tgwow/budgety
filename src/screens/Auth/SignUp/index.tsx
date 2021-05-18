@@ -4,13 +4,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from './styles';
-import Container from '../../../components/Layout/Container';
 import { View } from '../../../components/Themed';
 import {
-  StyledText,
-  StyledButton,
-  StyledInput,
-  StyledError,
+  Text,
+  Button,
+  Input,
+  Error,
+  ScrollableContainer,
 } from '../../../components';
 import schema from './validation';
 import { ICredentials } from '../../../types';
@@ -33,83 +33,77 @@ export default function SignUp({ navigation }: ISignUp) {
     mode: 'onChange',
   });
   const handleSignUp = ({ email, name, password }: ISignUpForm) => {
-    navigation.navigate('HeadedList');
+    // navigation.navigate('HeadedList');
   };
   return (
-    <Container style={styles.container}>
+    <ScrollableContainer contentContainerStyle={styles.container}>
       <View>
-        <StyledText level={6} weight="700">
+        <Text level={6} weight="700">
           Sign Up
-        </StyledText>
-        <StyledText level={2} weight="200">
+        </Text>
+        <Text level={2} weight="200">
           Facilitate your life!
-        </StyledText>
+        </Text>
       </View>
 
       <View>
-        <StyledText level={2} weight="700">
+        <Text level={2} weight="700">
           Name
-        </StyledText>
+        </Text>
         <Controller
           control={control}
-          render={({ field }) => (
-            <StyledInput {...field} style={styles.input} />
-          )}
+          render={({ field }) => <Input {...field} style={styles.input} />}
           name="name"
           rules={{ required: true }}
           defaultValue=""
         />
-        <StyledError>{errors.name && errors.name.message}</StyledError>
-        <StyledText level={2} weight="700">
+        <Error>{errors.name && errors.name.message}</Error>
+        <Text level={2} weight="700">
           Email
-        </StyledText>
+        </Text>
         <Controller
           control={control}
-          render={({ field }) => (
-            <StyledInput {...field} style={styles.input} />
-          )}
+          render={({ field }) => <Input {...field} style={styles.input} />}
           name="email"
           rules={{ required: true }}
           defaultValue=""
         />
-        <StyledError>{errors.email && errors.email.message}</StyledError>
+        <Error>{errors.email && errors.email.message}</Error>
 
-        <StyledText level={2} weight="700">
+        <Text level={2} weight="700">
           Password
-        </StyledText>
+        </Text>
         <Controller
           control={control}
           render={({ field }) => (
-            <StyledInput {...field} style={styles.input} secureTextEntry />
+            <Input {...field} style={styles.input} secureTextEntry />
           )}
           name="password"
           rules={{ required: true }}
           defaultValue=""
         />
-        <StyledError>{errors.password && errors.password.message}</StyledError>
+        <Error>{errors.password && errors.password.message}</Error>
       </View>
       <View>
-        <StyledButton
+        <Button
           title="Sign Up"
-          onPress={handleSubmit(handleSignUp, () =>
-            navigation.navigate('HeadedList')
-          )}
+          onPress={handleSubmit(handleSignUp)}
           style={styles.button}
         />
         <TouchableOpacity style={styles.createContainer}>
-          <StyledText level={1} weight="200">
+          <Text level={1} weight="200">
             back to{' '}
-            <StyledText
+            <Text
               level={1}
               weight="200"
               style={styles.underline}
               onPress={() => navigation.navigate('SignIn')}
             >
               SignIn!
-            </StyledText>
-          </StyledText>
+            </Text>
+          </Text>
         </TouchableOpacity>
       </View>
-    </Container>
+    </ScrollableContainer>
   );
 }

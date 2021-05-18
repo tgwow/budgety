@@ -1,34 +1,34 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../../constants/Colors';
 import useColorScheme from '../../hooks/useColorScheme';
 import { Text } from '../../components/Themed';
+import Budget from '../../screens/App/Budget';
 
-export type IBottomTabNavigator = {
-  Home: undefined;
+export type IAppStack = {
+  Budget: undefined;
   Incoming: undefined;
   Outgoing: undefined;
 };
 
-const BottomTab = createBottomTabNavigator<IBottomTabNavigator>();
+const BottomTab = createBottomTabNavigator<IAppStack>();
 
-export default function BottomTabNavigator() {
+export default function AppStack() {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Budget"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="Home"
-        component={() => <Text>Home</Text>}
+        name="Budget"
+        component={Budget}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="trending-up-sharp" color={color} />
           ),
         }}
       />

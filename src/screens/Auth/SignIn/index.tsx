@@ -3,18 +3,16 @@ import { TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSetRecoilState } from 'recoil';
 import styles from './styles';
-import Container from '../../../components/Layout/Container';
+import { Container, Text, Button, Input, Error } from '../../../components';
+
 import { View } from '../../../components/Themed';
-import {
-  StyledText,
-  StyledButton,
-  StyledInput,
-  StyledError,
-} from '../../../components';
+
 import schema from './validation';
 import { ICredentials } from '../../../types';
 import { IAuthStack } from '../../../navigation/Auth';
+import { isLoggedInState } from '../../../atom';
 
 export type ISignInForm = ICredentials;
 
@@ -31,79 +29,78 @@ export default function SignIn({ navigation }: ISignIn) {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
   const handleSignIn = ({ email, password }: ISignInForm) => {
     if (email !== 'admin@admin.com' || password !== 'Admin123') {
       alert('Invalid credentials');
       return;
     }
-    navigation.navigate('SignUp');
+    setIsLoggedIn(true);
   };
-  console.log('oi');
+
   return (
     <Container style={styles.container}>
       <View>
-        <StyledText level={6} weight="700">
+        <Text level={6} weight="700">
           Sign In
-        </StyledText>
-        <StyledText level={2} weight="200">
+        </Text>
+        <Text level={2} weight="200">
           Welcome back!
-        </StyledText>
+        </Text>
       </View>
 
       <View>
-        <StyledText level={2} weight="700">
+        <Text level={2} weight="700">
           Email
-        </StyledText>
+        </Text>
         <Controller
           control={control}
-          render={({ field }) => (
-            <StyledInput {...field} style={styles.input} />
-          )}
+          render={({ field }) => <Input {...field} style={styles.input} />}
           name="email"
           rules={{ required: true }}
           defaultValue=""
         />
-        <StyledError>{errors.email && errors.email.message}</StyledError>
+        <Error>{errors.email && errors.email.message}</Error>
 
-        <StyledText level={2} weight="700">
+        <Text level={2} weight="700">
           Password
-        </StyledText>
+        </Text>
         <Controller
           control={control}
           render={({ field }) => (
-            <StyledInput {...field} style={styles.input} secureTextEntry />
+            <Input {...field} style={styles.input} secureTextEntry />
           )}
           name="password"
           rules={{ required: true }}
           defaultValue=""
         />
-        <StyledError>{errors.password && errors.password.message}</StyledError>
+        <Error>{errors.password && errors.password.message}</Error>
 
         <TouchableOpacity style={styles.forgotContainer}>
-          <StyledText level={1} weight="200" style={styles.underline}>
+          <Text level={1} weight="200" style={styles.underline}>
             Forgot Password
-          </StyledText>
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
-        <StyledButton
+        <Button
           title="Log In"
           onPress={handleSubmit(handleSignIn)}
           style={styles.button}
         />
         <TouchableOpacity style={styles.createContainer}>
-          <StyledText level={1} weight="200">
+          <Text level={1} weight="200">
             or create an account{' '}
-            <StyledText
+            <Text
               level={1}
               weight="200"
               style={styles.underline}
               onPress={() => navigation.navigate('SignUp')}
             >
               here!
-            </StyledText>
-          </StyledText>
+            </Text>
+          </Text>
         </TouchableOpacity>
       </View>
     </Container>
