@@ -8,17 +8,19 @@ import { numberToCurrency } from '../../../utils';
 import Colors from '../../../constants/Colors';
 
 type ICard = {
-  type: string;
-  title: string;
-  amount: number;
-  date: Date;
+  value: number;
+  description: string;
+  category: string;
+  type: number;
+  date: string;
 } & ButtonProps;
 
 export default function Card({
   style,
+  value,
+  description,
+  category,
   type,
-  title,
-  amount,
   date,
   ...rest
 }: ICard) {
@@ -29,22 +31,22 @@ export default function Card({
       darkColor={Colors.dark.backgroundContrast}
     >
       <View>
-        <Text weight="700">{title}</Text>
+        <Text weight="700">{description}</Text>
         <View style={styles.row}>
           <Text level={1} darkColor={Colors.dark.darkText}>
-            {date.toLocaleDateString()}
+            {date}
           </Text>
           <Text level={1} darkColor={Colors.dark.darkText} style={styles.tag}>
-            food
+            {category}
           </Text>
         </View>
       </View>
       <Text
         weight="700"
         style={styles.amount}
-        darkColor={type === 'incoming' ? Colors.dark.green : Colors.dark.red}
+        darkColor={type === 1 ? Colors.dark.green : Colors.dark.red}
       >
-        {numberToCurrency(amount)}
+        {numberToCurrency(value)}
       </Text>
     </Button>
   );

@@ -1,2 +1,7 @@
+import 'intl';
+import 'intl/locale-data/jsonp/en-US';
+
 export const numberToCurrency = (value: number, currency = 'USD') =>
-  new Intl.NumberFormat('en', { style: 'currency', currency }).format(value);
+  new global.Intl.NumberFormat('en', { style: 'currency', currency }).format(
+    value
+  );

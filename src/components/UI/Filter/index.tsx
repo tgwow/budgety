@@ -21,6 +21,7 @@ export default function Filter({
     <FlatList
       data={filters}
       style={[style, styles.filter]}
+      contentContainerStyle={{ paddingBottom: 10, paddingRight: 50 }}
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
       renderItem={({ item, index }) => (
