@@ -11,7 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import { View, ViewProps } from '../../Themed';
-import { Switch, Text } from '../..';
+import { Switch, Text } from '../../UI';
 import Colors from '../../../constants/Colors';
 
 import { styles, footerStyles } from './styles';
@@ -35,7 +35,7 @@ export type IHeader = {
 
 export default function Header({
   style,
-  title = 'Budgets',
+  title,
   amount,
   type,
   onChangeType,
@@ -61,7 +61,7 @@ export default function Header({
           />
         )}
       </View>
-      {amount && (
+      {title === 'Budgets' ? (
         <View style={footerStyles(headerHeight).card} onLayout={onLayout}>
           <Text level={4} weight="700" style={styles.amount}>
             {numberToCurrency(amount)}
@@ -81,7 +81,7 @@ export default function Header({
             />
           </TouchableOpacity>
         </View>
-      )}
+      ) : null}
     </View>
   );
 }

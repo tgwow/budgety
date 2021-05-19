@@ -28,6 +28,5 @@ export default function useLoadResources() {
 
     loadResourcesAndDataAsync();
   }, []);
-  console.log(isLoadingComplete);
   return isLoadingComplete;
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as SQLite from 'expo-sqlite';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Input,
   Header,
@@ -19,16 +22,16 @@ export type FormData = {
   description: string;
   category: string;
 };
+
+const db = SQLite.openDatabase('db.budgety');
+
 export default function AddTransaction() {
   const [transactionType, setTransactionType] = useState<1 | 0>(1);
   const [date, setDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const navigation = useNavigation();
 
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<FormData>({
+  const { control, formState, handleSubmit } = useForm<FormData>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
     defaultValues: {
@@ -38,8 +41,23 @@ export default function AddTransaction() {
   const title = transactionType === 1 ? 'incoming' : 'outgoing';
   const valueTitle = transactionType === 1 ? 'Incoming' : 'Expense';
 
-  const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date.toLocaleDateString();
+  useEffect(() => {
+    db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS transactions', []);
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, value INT(20), description VARCHAR(50), category VARCHAR(25), type INT(1), date VARCHAR(25))',
+        [],
+        undefined,
+        (row, error) => {
+          console.log(error);
+          return false;
+        }
+      );
+    });
+  }, []);
+
+  const onChangeDate = (_event: any, selectedDate: Date) => {
+    const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
   };
@@ -48,14 +66,40 @@ export default function AddTransaction() {
     setShowDatePicker(true);
   };
 
-  const onSubmit = (data: FormData) => {
-    console.log({ ...data, date: date.toLocaleDateString() });
+  const onSubmit = async (data: FormData) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'INSERT INTO transactions (value, description, category, type, date) VALUES (?,?,?,?,?)',
+        [
+          data.value,
+          data.description,
+          data.category,
+          transactionType,
+          date.toLocaleDateString(),
+        ],
+        (_tx, results) => {
+          if (results.rowsAffected > 0) {
+            Alert.alert(
+              'Success',
+              `Your ${valueTitle} was successfully created!`,
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => navigation.navigate('Home'),
+                },
+              ],
+              { cancelable: false }
+            );
+          } else alert('Registration Failed');
+        }
+      );
+    });
   };
 
-  const onSubmitError = (errors) => {
-    console.log(errors?.value?.message);
-    console.log(errors?.category?.message);
-    console.log(errors?.description?.message);
+  const onSubmitError = (error: any) => {
+    console.log(error?.value?.message);
+    console.log(error?.category?.message);
+    console.log(error?.description?.message);
   };
 
   return (
