@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Header, Text } from '../../../components';
 
-import { IAppStack } from '../../../navigation/App';
 import Filter from '../../../components/UI/Filter';
 import Card from '../../../components/UI/Card';
-
-type IBudget = {
-  navigation: StackNavigationProp<IAppStack, 'Budget'>;
-};
 
 export default function Budget() {
   const [activeFilters, setActiveFilters] = useState(['All']);
