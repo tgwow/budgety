@@ -2,9 +2,14 @@ import { ScaledSheet } from 'react-native-size-matters';
 import Colors from '../../../constants/Colors';
 
 export const styles = ScaledSheet.create({
-  budget: {
+  container: {
     paddingHorizontal: '30@s',
     paddingTop: '30@vs',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     marginBottom: '15@s',
