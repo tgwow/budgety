@@ -2,8 +2,8 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 export default ScaledSheet.create({
   container: {
-    justifyContent: 'space-evenly',
-    paddingHorizontal: '30@s',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  button: { marginTop: '5@s' },
 });

@@ -13,9 +13,11 @@ import {
   Button,
   Container,
 } from '../../../../components';
-import styles from '../../../Auth/SignIn/styles';
+import styles from './styles';
+import globalStyles from '../../../../styles';
 import schema from './validation';
 import DatePicker from '../../../../components/UI/DatePicker';
+import { firstLetterUppercase } from '../../../../utils/heading';
 
 export type FormData = {
   value: number;
@@ -24,26 +26,26 @@ export type FormData = {
 };
 
 const db = SQLite.openDatabase('db.budgety');
+// tx.executeSql('DROP TABLE IF EXISTS transactions', []);
 
 export default function AddTransaction() {
   const [transactionType, setTransactionType] = useState<1 | 0>(1);
   const [date, setDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const navigation = useNavigation();
+  const title = transactionType === 1 ? 'incoming' : 'outgoing';
 
-  const { control, formState, handleSubmit } = useForm<FormData>({
+  const { control, handleSubmit } = useForm<FormData>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
     defaultValues: {
       value: 0,
     },
   });
-  const title = transactionType === 1 ? 'incoming' : 'outgoing';
-  const valueTitle = transactionType === 1 ? 'Incoming' : 'Expense';
 
   useEffect(() => {
+    // TODO: Execute this query just once
     db.transaction((tx) => {
-      // tx.executeSql('DROP TABLE IF EXISTS transactions', []);
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, value INT(20), description VARCHAR(50), category VARCHAR(25), type INT(1), date VARCHAR(25))',
         [],
@@ -81,7 +83,7 @@ export default function AddTransaction() {
           if (results.rowsAffected > 0) {
             Alert.alert(
               'Success',
-              `Your ${valueTitle} was successfully created!`,
+              `Your ${title.toLowerCase()} was successfully created!`,
               [
                 {
                   text: 'Ok',
@@ -96,12 +98,6 @@ export default function AddTransaction() {
     });
   };
 
-  const onSubmitError = (error: any) => {
-    console.log(error?.value?.message);
-    console.log(error?.category?.message);
-    console.log(error?.description?.message);
-  };
-
   return (
     <ScrollableContainer>
       <Header
@@ -110,11 +106,15 @@ export default function AddTransaction() {
         onChangeType={setTransactionType}
       />
       <Container style={styles.container}>
-        <Text>{valueTitle} value: </Text>
+        <Text>{firstLetterUppercase(title)} value: </Text>
         <Controller
           control={control}
           render={({ field }) => (
-            <Input {...field} style={styles.input} keyboardType="number-pad" />
+            <Input
+              {...field}
+              style={globalStyles.input}
+              keyboardType="number-pad"
+            />
           )}
           name="value"
           defaultValue={0}
@@ -122,20 +122,28 @@ export default function AddTransaction() {
         <Text>Description: </Text>
         <Controller
           control={control}
-          render={({ field }) => <Input {...field} style={styles.input} />}
+          render={({ field }) => (
+            <Input {...field} style={globalStyles.input} />
+          )}
           name="description"
           defaultValue=""
         />
         <Text>Tag: </Text>
         <Controller
           control={control}
-          render={({ field }) => <Input {...field} style={styles.input} />}
+          render={({ field }) => (
+            <Input {...field} style={globalStyles.input} />
+          )}
           name="category"
           defaultValue=""
         />
         <Text>Date: </Text>
         <Button title="Select date" onPress={() => onShowDate()} />
-        <Button title="Save" onPress={handleSubmit(onSubmit, onSubmitError)} />
+        <Button
+          title="Save"
+          onPress={handleSubmit(onSubmit)}
+          style={styles.button}
+        />
       </Container>
       {showDatePicker && (
         <DatePicker value={date} onChangeValue={onChangeDate} />

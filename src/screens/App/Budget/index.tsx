@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-plusplus */
+import React, { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as SQLite from 'expo-sqlite';
-import { ActivityIndicator, FlatList } from 'react-native';
-import AppLoadingPlaceholder from 'expo/build/launch/AppLoadingPlaceholder';
+import { FlatList } from 'react-native';
 import { Container, Header, Text } from '../../../components';
 
 import Filter from '../../../components/UI/Filter';
 import Card from '../../../components/UI/Card';
-import { View } from '../../../components/Themed';
+import Loading from '../../../components/UI/Loading';
 
 const db = SQLite.openDatabase('db.budgety');
 
@@ -21,49 +21,61 @@ export type ITransaction = {
 };
 
 export default function Budget() {
-  const [activeFilters, setActiveFilters] = useState(['All']);
+  const [activeFilters, setActiveFilters] = useState<Array<string>>([]);
   const [data, setData] = useState<Array<ITransaction> | null>(null);
   const [balance, setBalance] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   const filters = [
-    'All',
     'Food',
     'Home',
-    'Others',
-    'Study',
-    'Drugs',
+    'Education',
     'Leisure',
+    'Investments',
+    'Transport',
+    'Test',
+    'Others',
   ];
+
   useFocusEffect(
     React.useCallback(() => {
-      db.transaction((tx) => {
-        tx.executeSql('select * from transactions', [], (row, success) => {
-          if (success.rows.length > 0) {
-            let tempBalance = 0;
-            let updatedData: Array<ITransaction> = [];
-            const temp: Array<ITransaction> = [];
-            // eslint-disable-next-line no-plusplus
-            for (let i = 0; i < success.rows.length; i++) {
-              temp.push(success.rows.item(i));
-              tempBalance += success.rows.item(i).value;
+      const something = db.transaction(
+        (tx) => {
+          setLoading(true);
+          let query;
+          let filter: any = [];
+          if (activeFilters.length) {
+            query = `SELECT * FROM transactions WHERE category LIKE '?'`;
+            filter = activeFilters.map((_filter: string) =>
+              _filter.toLowerCase()
+            );
+          } else query = `SELECT * FROM transactions`;
+          tx.executeSql(query, filter, (row, success) => {
+            if (success.rows.length > 0) {
+              let tempBalance = 0;
+              let updatedData: Array<ITransaction> = [];
+              const temp: Array<ITransaction> = [];
+              for (let i = 0; i < success.rows.length; i++) {
+                const item = success.rows.item(i);
+                if (item.type === 1) tempBalance += item.value;
+                else tempBalance -= item.value;
+                temp.push(item);
+              }
+              updatedData = [...temp];
+              setData(updatedData);
+              setBalance(tempBalance);
             }
-            updatedData = [...temp];
-            setData(updatedData);
-            setBalance(tempBalance);
-          }
-        });
-      });
-      const timeoutId = setTimeout(() => {
-        setLoading(false);
-      }, 4000);
-      return () => clearTimeout(timeoutId);
+          });
+        },
+        undefined,
+        () => setLoading(false)
+      );
+      return () => something;
     }, [])
   );
 
   const onFilterPressed = (value: string) => {
     const index = activeFilters.indexOf(value);
-
     let updatedActiveFilters = [...activeFilters];
 
     if (index === -1) {
@@ -71,16 +83,11 @@ export default function Budget() {
     } else {
       updatedActiveFilters.splice(index, 1);
     }
-
     setActiveFilters(updatedActiveFilters);
   };
 
-  if (loading)
-    return (
-      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <ActivityIndicator color="red" />
-      </View>
-    );
+  if (loading) return <Loading />;
+
   return (
     <Container>
       <Header title="Budgets" amount={balance} />

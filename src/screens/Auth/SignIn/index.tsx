@@ -76,12 +76,6 @@ export default function SignIn({ navigation }: ISignIn) {
           defaultValue=""
         />
         <Error>{errors.password && errors.password.message}</Error>
-
-        <TouchableOpacity style={styles.forgotContainer}>
-          <Text level={1} weight="200" style={styles.underline}>
-            Forgot Password
-          </Text>
-        </TouchableOpacity>
       </View>
       <View>
         <Button

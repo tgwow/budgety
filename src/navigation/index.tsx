@@ -26,7 +26,7 @@ export const RootStack = () => {
       screenOptions={{ headerShown: false }}
       initialRouteName="Auth"
     >
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <Stack.Screen name="Auth" component={AuthStack} />
       ) : (
         <Stack.Screen name="App" component={AppStack} />
