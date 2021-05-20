@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from './styles';
+import globalStyles from '../../../styles';
 import { View } from '../../../components/Themed';
 import {
   Text,
@@ -52,7 +53,9 @@ export default function SignUp({ navigation }: ISignUp) {
         </Text>
         <Controller
           control={control}
-          render={({ field }) => <Input {...field} style={styles.input} />}
+          render={({ field }) => (
+            <Input {...field} style={globalStyles.input} />
+          )}
           name="name"
           rules={{ required: true }}
           defaultValue=""
@@ -63,7 +66,9 @@ export default function SignUp({ navigation }: ISignUp) {
         </Text>
         <Controller
           control={control}
-          render={({ field }) => <Input {...field} style={styles.input} />}
+          render={({ field }) => (
+            <Input {...field} style={globalStyles.input} />
+          )}
           name="email"
           rules={{ required: true }}
           defaultValue=""
@@ -76,7 +81,7 @@ export default function SignUp({ navigation }: ISignUp) {
         <Controller
           control={control}
           render={({ field }) => (
-            <Input {...field} style={styles.input} secureTextEntry />
+            <Input {...field} style={globalStyles.input} secureTextEntry />
           )}
           name="password"
           rules={{ required: true }}
@@ -88,15 +93,15 @@ export default function SignUp({ navigation }: ISignUp) {
         <Button
           title="Sign Up"
           onPress={handleSubmit(handleSignUp)}
-          style={styles.button}
+          style={globalStyles.button}
         />
-        <TouchableOpacity style={styles.createContainer}>
+        <TouchableOpacity style={globalStyles.createContainer}>
           <Text level={1} weight="200">
             back to{' '}
             <Text
               level={1}
               weight="200"
-              style={styles.underline}
+              style={globalStyles.underline}
               onPress={() => navigation.navigate('SignIn')}
             >
               SignIn!
