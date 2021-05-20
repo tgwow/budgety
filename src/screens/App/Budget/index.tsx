@@ -39,36 +39,37 @@ export default function Budget() {
 
   useFocusEffect(
     React.useCallback(() => {
-      const something = db.transaction((tx) => {
-        setLoading(true);
-        let query;
-        let filter: any = [];
-        if (activeFilters.length) {
-          query = `SELECT * FROM transactions WHERE category LIKE '?'`;
-          filter = activeFilters.map((_filter: string) =>
-            _filter.toLowerCase()
-          );
-        } else query = `SELECT * FROM transactions`;
-        tx.executeSql(query, filter, (row, success) => {
-          if (success.rows.length > 0) {
-            let tempBalance = 0;
-            let updatedData: Array<ITransaction> = [];
-            const temp: Array<ITransaction> = [];
-            for (let i = 0; i < success.rows.length; i++) {
-              const item = success.rows.item(i);
-              if (item.type === 1) tempBalance += item.value;
-              else tempBalance -= item.value;
-              temp.push(item);
+      const something = db.transaction(
+        (tx) => {
+          setLoading(true);
+          let query;
+          let filter: any = [];
+          if (activeFilters.length) {
+            query = `SELECT * FROM transactions WHERE category LIKE '?'`;
+            filter = activeFilters.map((_filter: string) =>
+              _filter.toLowerCase()
+            );
+          } else query = `SELECT * FROM transactions`;
+          tx.executeSql(query, filter, (row, success) => {
+            if (success.rows.length > 0) {
+              let tempBalance = 0;
+              let updatedData: Array<ITransaction> = [];
+              const temp: Array<ITransaction> = [];
+              for (let i = 0; i < success.rows.length; i++) {
+                const item = success.rows.item(i);
+                if (item.type === 1) tempBalance += item.value;
+                else tempBalance -= item.value;
+                temp.push(item);
+              }
+              updatedData = [...temp];
+              setData(updatedData);
+              setBalance(tempBalance);
             }
-            updatedData = [...temp];
-            setData(updatedData);
-            setBalance(tempBalance);
-          }
-        });
-      });
-      // const timeoutId = setTimeout(() => {
-      //   setLoading(false);
-      // }, 1000);
+          });
+        },
+        undefined,
+        () => setLoading(false)
+      );
       return () => something;
     }, [])
   );
